@@ -25,6 +25,8 @@
 
 ## Introduction
 
+<TODO>
+
 ## Tech Stack
 
 -   Programming Languages: **Python**, **C**
@@ -34,19 +36,35 @@
 
 ## System Architecture
 
+<TODO>
+
 ## Python CLI Controller
+
+<TODO>
 
 ## Python & C Integration
 
+<TODO>
+
 ## C Sorting Algorithms
+
+<TODO>
 
 ## Data Structure
 
+<TODO>
+
 ## Performance Benchmarking
+
+<TODO>
 
 ## User Guide
 
+<TODO>
+
 ## Results & Observations
+
+<TODO>
 
 ## Changelog
 
@@ -58,9 +76,15 @@
 
 ## Limitations & Future Work
 
+<TODO>
+
 ## Conclusion
 
+<TODO>
+
 ## Appendix
+
+<TODO>
 
 ## Acknowledgements
 
