@@ -45,6 +45,12 @@
 
 ## Changelog
 
+### [v0.1] - 2025-09-02
+
+-   Initialise Git repository
+-   Add MIT licence ([LICENSE](LICENSE))
+-   Add initial documentation draft ([README.md](README.md))
+
 ## Limitations & Future Work
 
 ## Conclusion
