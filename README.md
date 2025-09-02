@@ -12,7 +12,7 @@
 -   [Python CLI Controller](#python-cli-controller)
 -   [Python & C Integration](#python--c-integration)
 -   [C Sorting Algorithms](#c-sorting-algorithms)
--   [Data Files](#data-files)
+-   [Data Structure](#data-structure)
 -   [Performance Benchmarking](#performance-benchmarking)
 -   [User Guide](#user-guide)
 -   [Results & Observations](#results--observations)
@@ -35,7 +35,7 @@
 
 ## C Sorting Algorithms
 
-## Data Files
+## Data Structure
 
 ## Performance Benchmarking
 
