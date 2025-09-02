@@ -53,6 +53,14 @@
 
 ## Acknowledgements
 
+### Credits
+
+-   Eternal gratitude to God, the Most Gracious, the Most Merciful.
+
+### References
+
+-   https://docs.python.org/3/
+
 ## Licence
 
 This project is licensed under the [MIT Licence](LICENSE).
