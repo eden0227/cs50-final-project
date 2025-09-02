@@ -27,6 +27,11 @@
 
 ## Tech Stack
 
+-   Programming Languages: **Python**, **C**
+-   Version Control: **Git**
+-   Remote Repository Hosting: **GitHub**
+-   Integrated Development Environment: **Visual Studio Code**
+
 ## System Architecture
 
 ## Python CLI Controller
