@@ -4,6 +4,8 @@
 
 > Video Demo: <URL HERE>
 
+---
+
 ## Table of Contents
 
 -   [Introduction](#introduction)
@@ -23,9 +25,13 @@
 -   [Acknowledgements](#acknowledgements)
 -   [Licence](#licence)
 
+---
+
 ## Introduction
 
 <TODO>
+
+---
 
 ## Tech Stack
 
@@ -34,37 +40,55 @@
 -   Remote Repository Hosting: **GitHub**
 -   Integrated Development Environment: **Visual Studio Code**
 
+---
+
 ## System Architecture
 
 <TODO>
+
+---
 
 ## Python CLI Controller
 
 <TODO>
 
+---
+
 ## Python & C Integration
 
 <TODO>
+
+---
 
 ## C Sorting Algorithms
 
 <TODO>
 
+---
+
 ## Data Structure
 
 <TODO>
+
+---
 
 ## Performance Benchmarking
 
 <TODO>
 
+---
+
 ## User Guide
 
 <TODO>
 
+---
+
 ## Results & Observations
 
 <TODO>
+
+---
 
 ## Changelog
 
@@ -74,17 +98,25 @@
 -   Add MIT licence ([LICENSE](LICENSE))
 -   Add initial documentation draft ([README.md](README.md))
 
+---
+
 ## Limitations & Future Work
 
 <TODO>
+
+---
 
 ## Conclusion
 
 <TODO>
 
+---
+
 ## Appendix
 
 <TODO>
+
+---
 
 ## Acknowledgements
 
@@ -95,6 +127,8 @@
 ### References
 
 -   https://docs.python.org/3/
+
+---
 
 ## Licence
 
