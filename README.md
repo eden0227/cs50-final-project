@@ -92,6 +92,12 @@
 
 ## Changelog
 
+### [v0.2] - 2025-12-6
+
+-   Add src directory ([src](src))
+-   Add tests directory ([tests](tests))
+-   Add Makefile text file ([Makefile](Makefile))
+
 ### [v0.1] - 2025-09-02
 
 -   Initialise Git repository
