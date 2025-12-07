@@ -92,6 +92,11 @@
 
 ## Changelog
 
+### [v0.3] - 2025-12-7
+
+-   Add Python and C boilerplates ([src](src))
+-   Update Makefile for C build compilation
+
 ### [v0.2] - 2025-12-6
 
 -   Add src directory ([src](src))
