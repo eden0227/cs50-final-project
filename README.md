@@ -92,6 +92,10 @@
 
 ## Changelog
 
+### [v0.4] - 2025-12-8
+
+-   Add basic tests for C sorting algorithms (bubble, selection, insertion, merge) ([src](src))
+
 ### [v0.3] - 2025-12-7
 
 -   Add Python and C boilerplates ([src](src))
