@@ -77,18 +77,16 @@ void bubble_sort(int *num, size_t len)
     if (len < 2)
         return;
 
-    int *end = num + len;
-    for (int *i = num; i < end - 1; i++)
+    for (size_t i = 0; i < len - 1; i++)
     {
         int swapped = 0;
-        for (int *j = num; j < end - (i - num) - 1; j++)
+        for (size_t j = 0; j < len - i - 1; j++)
         {
-
-            if (*j > *(j + 1))
+            if (num[j] > num[j + 1])
             {
-                int temp = *j;
-                *j = *(j + 1);
-                *(j + 1) = temp;
+                int temp = num[j];
+                num[j] = num[j + 1];
+                num[j + 1] = temp;
                 swapped = 1;
             }
         }
@@ -102,22 +100,21 @@ void selection_sort(int *num, size_t len)
     if (len < 2)
         return;
 
-    int *end = num + len;
-    for (int *i = num; i < end - 1; i++)
+    for (size_t i = 0; i < len - 1; i++)
     {
-        int *min = i;
-        for (int *j = i + 1; j < end; j++)
+        size_t min = i;
+        for (size_t j = i + 1; j < len; j++)
         {
-            if (*j < *min)
+            if (num[j] < num[min])
             {
                 min = j;
             }
         }
         if (min != i)
         {
-            int temp = *i;
-            *i = *min;
-            *min = temp;
+            int temp = num[i];
+            num[i] = num[min];
+            num[min] = temp;
         }
     }
 }
@@ -127,27 +124,16 @@ void insertion_sort(int *num, size_t len)
     if (len < 2)
         return;
 
-    int *end = num + len;
-    int *min = num;
-    for (int *i = num + 1; i < end; i++)
+    for (size_t i = 1; i < len; i++)
     {
-        if (*i < *min)
-            min = i;
-    }
-    int temp = *num;
-    *num = *min;
-    *min = temp;
-
-    for (int *i = num + 2; i < end; i++)
-    {
-        int key = *i;
-        int *j = i - 1;
-        while (*j > key)
+        int key = num[i];
+        size_t j = i - 1; // unsigned
+        while (j >= 0 && num[j] > key)
         {
-            *(j + 1) = *j;
+            num[j + 1] = num[j];
             j = j - 1;
         }
-        *(j + 1) = key;
+        num[j + 1] = key;
     }
 }
 
