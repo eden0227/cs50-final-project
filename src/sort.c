@@ -2,19 +2,19 @@
 #include <stdio.h>
 #include <time.h>
 
-void display_numbers(int *num, size_t len);
-void shuffle_array(int *num, size_t len);
-void bubble_sort(int *num, size_t len);
-void selection_sort(int *num, size_t len);
-void insertion_sort(int *num, size_t len);
-void merge_sort(int *num, size_t left, size_t right);
+void display_numbers(int *num, int len);
+void shuffle_array(int *num, int len);
+void bubble_sort(int *num, int len);
+void selection_sort(int *num, int len);
+void insertion_sort(int *num, int len);
+void merge_sort(int *num, int left, int right);
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
     int num[] = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    size_t len = sizeof(num) / sizeof(num[0]);
+    int len = sizeof(num) / sizeof(num[0]);
 
     printf("\nBubble Sort:\n");
     display_numbers(num, len);
@@ -51,11 +51,11 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-void shuffle_array(int *num, size_t len)
+void shuffle_array(int *num, int len)
 {
-    for (size_t i = len - 1; i > 0; i--)
+    for (int i = len - 1; i > 0; i--)
     {
-        size_t j = rand() % (i + 1);
+        int j = rand() % (i + 1);
 
         int temp = num[i];
         num[i] = num[j];
@@ -63,7 +63,7 @@ void shuffle_array(int *num, size_t len)
     }
 }
 
-void display_numbers(int *num, size_t len)
+void display_numbers(int *num, int len)
 {
     for (int i = 0; i < len; i++)
     {
@@ -72,15 +72,15 @@ void display_numbers(int *num, size_t len)
     printf("\n");
 }
 
-void bubble_sort(int *num, size_t len)
+void bubble_sort(int *num, int len)
 {
     if (len < 2)
         return;
 
-    for (size_t i = 0; i < len - 1; i++)
+    for (int i = 0; i < len - 1; i++)
     {
         int swapped = 0;
-        for (size_t j = 0; j < len - i - 1; j++)
+        for (int j = 0; j < len - i - 1; j++)
         {
             if (num[j] > num[j + 1])
             {
@@ -95,15 +95,15 @@ void bubble_sort(int *num, size_t len)
     }
 }
 
-void selection_sort(int *num, size_t len)
+void selection_sort(int *num, int len)
 {
     if (len < 2)
         return;
 
-    for (size_t i = 0; i < len - 1; i++)
+    for (int i = 0; i < len - 1; i++)
     {
-        size_t min = i;
-        for (size_t j = i + 1; j < len; j++)
+        int min = i;
+        for (int j = i + 1; j < len; j++)
         {
             if (num[j] < num[min])
             {
@@ -119,15 +119,15 @@ void selection_sort(int *num, size_t len)
     }
 }
 
-void insertion_sort(int *num, size_t len)
+void insertion_sort(int *num, int len)
 {
     if (len < 2)
         return;
 
-    for (size_t i = 1; i < len; i++)
+    for (int i = 1; i < len; i++)
     {
         int key = num[i];
-        size_t j = i - 1; // unsigned
+        int j = i - 1; // unsigned
         while (j >= 0 && num[j] > key)
         {
             num[j + 1] = num[j];
@@ -137,17 +137,17 @@ void insertion_sort(int *num, size_t len)
     }
 }
 
-void merge_sort(int *num, size_t left, size_t right)
+void merge_sort(int *num, int left, int right)
 {
     if (left < right)
     {
-        size_t mid = left + (right - left) / 2;
+        int mid = left + (right - left) / 2;
 
         merge_sort(num, left, mid);
         merge_sort(num, mid + 1, right);
 
-        size_t n1 = mid - left + 1;
-        size_t n2 = right - mid;
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
 
         int *L = (int *)malloc(n1 * sizeof(int));
         int *R = (int *)malloc(n2 * sizeof(int));
@@ -160,12 +160,12 @@ void merge_sort(int *num, size_t left, size_t right)
             exit(1);
         }
 
-        for (size_t i = 0; i < n1; i++)
+        for (int i = 0; i < n1; i++)
             L[i] = num[left + i];
-        for (size_t i = 0; i < n2; i++)
+        for (int i = 0; i < n2; i++)
             R[i] = num[mid + 1 + i];
 
-        size_t i = 0, j = 0, k = left;
+        int i = 0, j = 0, k = left;
         while (i < n1 && j < n2)
             num[k++] = L[i] <= R[j] ? L[i++] : R[j++];
         while (i < n1)
