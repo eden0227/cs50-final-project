@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
+
+#define INSERTION_THRESHOLD 16
 
 void display_numbers(int *num, int len);
 void shuffle_array(int *num, int len);
@@ -8,6 +11,8 @@ void bubble_sort(int *num, int len);
 void selection_sort(int *num, int len);
 void insertion_sort(int *num, int len);
 void merge_sort(int *num, int left, int right);
+void merge_sort_helper(int *num, int left, int right, int *temp);
+void insertion_sort_helper(int *num, int left, int right);
 
 int main(int argc, char *argv[])
 {
@@ -56,7 +61,6 @@ void shuffle_array(int *num, int len)
     for (int i = len - 1; i > 0; i--)
     {
         int j = rand() % (i + 1);
-
         int temp = num[i];
         num[i] = num[j];
         num[j] = temp;
@@ -66,9 +70,7 @@ void shuffle_array(int *num, int len)
 void display_numbers(int *num, int len)
 {
     for (int i = 0; i < len; i++)
-    {
         printf("%i ", num[i]);
-    }
     printf("\n");
 }
 
@@ -106,9 +108,7 @@ void selection_sort(int *num, int len)
         for (int j = i + 1; j < len; j++)
         {
             if (num[j] < num[min])
-            {
                 min = j;
-            }
         }
         if (min != i)
         {
@@ -127,11 +127,11 @@ void insertion_sort(int *num, int len)
     for (int i = 1; i < len; i++)
     {
         int key = num[i];
-        int j = i - 1; // unsigned
+        int j = i - 1;
         while (j >= 0 && num[j] > key)
         {
             num[j + 1] = num[j];
-            j = j - 1;
+            j--;
         }
         num[j + 1] = key;
     }
@@ -141,39 +141,61 @@ void merge_sort(int *num, int left, int right)
 {
     if (left < right)
     {
-        int mid = left + (right - left) / 2;
-
-        merge_sort(num, left, mid);
-        merge_sort(num, mid + 1, right);
-
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
-
-        int *L = (int *)malloc(n1 * sizeof(int));
-        int *R = (int *)malloc(n2 * sizeof(int));
-
-        if (L == NULL || R == NULL)
+        int *temp = malloc((right - left + 1) * sizeof(int));
+        if (temp == NULL)
         {
-            free(L);
-            free(R);
             printf("Memory allocation failed\n");
             exit(1);
         }
+        merge_sort_helper(num, left, right, temp);
+        free(temp);
+    }
+}
 
-        for (int i = 0; i < n1; i++)
-            L[i] = num[left + i];
-        for (int i = 0; i < n2; i++)
-            R[i] = num[mid + 1 + i];
+void merge_sort_helper(int *num, int left, int right, int *temp)
+{
+    if (left >= right)
+        return;
 
-        int i = 0, j = 0, k = left;
-        while (i < n1 && j < n2)
-            num[k++] = L[i] <= R[j] ? L[i++] : R[j++];
-        while (i < n1)
-            num[k++] = L[i++];
-        while (j < n2)
-            num[k++] = R[j++];
+    if (right - left < INSERTION_THRESHOLD)
+    {
+        insertion_sort_helper(num, left, right);
+        return;
+    }
 
-        free(R);
-        free(L);
+    int mid = left + (right - left) / 2;
+
+    merge_sort_helper(num, left, mid, temp);
+    merge_sort_helper(num, mid + 1, right, temp);
+
+    if (num[mid] <= num[mid + 1])
+        return;
+
+    int i = left, j = mid + 1, k = 0;
+    while (i <= mid && j <= right)
+        temp[k++] = num[i] <= num[j] ? num[i++] : num[j++];
+    while (i <= mid)
+        temp[k++] = num[i++];
+    while (j <= right)
+        temp[k++] = num[j++];
+
+    memcpy(num + left, temp, k * sizeof(int));
+}
+
+void insertion_sort_helper(int *num, int left, int right)
+{
+    if (right - left < 1)
+        return;
+
+    for (int i = left + 1; i <= right; i++)
+    {
+        int key = num[i];
+        int j = i - 1;
+        while (j >= left && num[j] > key)
+        {
+            num[j + 1] = num[j];
+            j--;
+        }
+        num[j + 1] = key;
     }
 }
