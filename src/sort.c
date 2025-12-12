@@ -5,6 +5,7 @@
 
 #define INSERTION_THRESHOLD 16
 
+void test_sort(char *name, void (*func)(int *, int), int *num, int len);
 void display_numbers(int *num, int len);
 void shuffle_array(int *num, int len);
 void bubble_sort(int *num, int len);
@@ -21,39 +22,30 @@ int main(int argc, char *argv[])
     int num[] = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     int len = sizeof(num) / sizeof(num[0]);
 
-    printf("\nBubble Sort:\n");
-    display_numbers(num, len);
-    bubble_sort(num, len);
-    printf("Result:\n");
-    display_numbers(num, len);
-    shuffle_array(num, len);
-    printf("\n");
-
-    printf("Selection Sort:\n");
-    display_numbers(num, len);
-    selection_sort(num, len);
-    printf("Result:\n");
-    display_numbers(num, len);
-    shuffle_array(num, len);
-    printf("\n");
-
-    printf("Insertion Sort:\n");
-    display_numbers(num, len);
-    selection_sort(num, len);
-    printf("Result:\n");
-    display_numbers(num, len);
-    shuffle_array(num, len);
-    printf("\n");
-
-    printf("Merge Sort:\n");
-    display_numbers(num, len);
-    merge_sort(num, len);
-    printf("Result:\n");
-    display_numbers(num, len);
-    shuffle_array(num, len);
-    printf("\n");
+    test_sort("Bubble Sort", bubble_sort, num, len);
+    test_sort("Selection Sort", selection_sort, num, len);
+    test_sort("Insertion Sort", insertion_sort, num, len);
+    test_sort("Merge Sort", merge_sort, num, len);
 
     return 0;
+}
+
+void test_sort(char *name, void (*func)(int *, int), int *num, int len)
+{
+    printf("%s:\n", name);
+    display_numbers(num, len);
+    func(num, len);
+    printf("Result:\n");
+    display_numbers(num, len);
+    shuffle_array(num, len);
+    printf("\n");
+}
+
+void display_numbers(int *num, int len)
+{
+    for (int i = 0; i < len; i++)
+        printf("%i ", num[i]);
+    printf("\n");
 }
 
 void shuffle_array(int *num, int len)
@@ -65,13 +57,6 @@ void shuffle_array(int *num, int len)
         num[i] = num[j];
         num[j] = temp;
     }
-}
-
-void display_numbers(int *num, int len)
-{
-    for (int i = 0; i < len; i++)
-        printf("%i ", num[i]);
-    printf("\n");
 }
 
 void bubble_sort(int *num, int len)
