@@ -10,7 +10,7 @@ void shuffle_array(int *num, int len);
 void bubble_sort(int *num, int len);
 void selection_sort(int *num, int len);
 void insertion_sort(int *num, int len);
-void merge_sort(int *num, int left, int right);
+void merge_sort(int *num, int len);
 void merge_sort_helper(int *num, int left, int right, int *temp);
 void insertion_sort_helper(int *num, int left, int right);
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 
     printf("Merge Sort:\n");
     display_numbers(num, len);
-    merge_sort(num, 0, len - 1);
+    merge_sort(num, len);
     printf("Result:\n");
     display_numbers(num, len);
     shuffle_array(num, len);
@@ -137,19 +137,19 @@ void insertion_sort(int *num, int len)
     }
 }
 
-void merge_sort(int *num, int left, int right)
+void merge_sort(int *num, int len)
 {
-    if (left < right)
+    if (len < 2)
+        return;
+
+    int *temp = malloc(len * sizeof(int));
+    if (temp == NULL)
     {
-        int *temp = malloc((right - left + 1) * sizeof(int));
-        if (temp == NULL)
-        {
-            printf("Memory allocation failed\n");
-            exit(1);
-        }
-        merge_sort_helper(num, left, right, temp);
-        free(temp);
+        printf("Memory allocation failed\n");
+        exit(1);
     }
+    merge_sort_helper(num, 0, len - 1, temp);
+    free(temp);
 }
 
 void merge_sort_helper(int *num, int left, int right, int *temp)
