@@ -3,29 +3,35 @@
 #include <string.h>
 #include <time.h>
 
-#define INSERTION_THRESHOLD 16
+#define INSERTION_THRESHOLD 8
 
 void test_sort(char *name, void (*func)(int *, int), int *num, int len);
 void display_numbers(int *num, int len);
 void shuffle_array(int *num, int len);
+void compare_array(int *num, int len);
 void bubble_sort(int *num, int len);
 void selection_sort(int *num, int len);
 void insertion_sort(int *num, int len);
 void merge_sort(int *num, int len);
 void merge_sort_helper(int *num, int left, int right, int *temp);
 void insertion_sort_helper(int *num, int left, int right);
+void quick_sort(int *num, int len);
+void quick_sort_helper(int *num, int low, int high);
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    int num[] = {15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int num[] = {30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
+                 20, 19, 18, 17, 16, 15, 14, 13, 12, 11,
+                 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     int len = sizeof(num) / sizeof(num[0]);
 
     test_sort("Bubble Sort", bubble_sort, num, len);
     test_sort("Selection Sort", selection_sort, num, len);
     test_sort("Insertion Sort", insertion_sort, num, len);
     test_sort("Merge Sort", merge_sort, num, len);
+    test_sort("Quick Sort", quick_sort, num, len);
 
     return 0;
 }
@@ -37,6 +43,7 @@ void test_sort(char *name, void (*func)(int *, int), int *num, int len)
     func(num, len);
     printf("Result:\n");
     display_numbers(num, len);
+    compare_array(num, len);
     shuffle_array(num, len);
     printf("\n");
 }
@@ -57,6 +64,22 @@ void shuffle_array(int *num, int len)
         num[i] = num[j];
         num[j] = temp;
     }
+}
+
+void compare_array(int *num, int len)
+{
+    int sorted[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                    21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+    for (int i = 0; i < len; i++)
+    {
+        if (num[i] != sorted[i])
+        {
+            printf("Not Sorted\n");
+            return;
+        }
+    }
+    printf("Sorted!\n");
 }
 
 void bubble_sort(int *num, int len)
@@ -184,3 +207,45 @@ void insertion_sort_helper(int *num, int left, int right)
         num[j + 1] = key;
     }
 }
+
+void quick_sort(int *num, int len)
+{
+    if (len < 2)
+        return;
+
+    quick_sort_helper(num, 0, len - 1);
+}
+
+void quick_sort_helper(int *num, int low, int high)
+{
+    if (low >= high)
+        return;
+
+    int pivot = num[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++)
+    {
+        if (num[j] <= pivot)
+        {
+            i++;
+            int temp = num[j];
+            num[j] = num[i];
+            num[i] = temp;
+        }
+    }
+
+    int temp = num[i + 1];
+    num[i + 1] = pivot;
+    num[high] = temp;
+    int pi = i + 1;
+
+    quick_sort_helper(num, low, pi - 1);
+    quick_sort_helper(num, pi + 1, high);
+}
+
+// heap sort
+
+// radix sort
+
+// bucket sort
