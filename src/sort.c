@@ -221,27 +221,30 @@ void quick_sort_helper(int *num, int low, int high)
     if (low >= high)
         return;
 
-    int pivot = num[high];
+    int pivot = num[(low + high) / 2];
     int i = low - 1;
+    int j = high + 1;
 
-    for (int j = low; j < high; j++)
+    while (1)
     {
-        if (num[j] <= pivot)
-        {
+        do
             i++;
-            int temp = num[j];
-            num[j] = num[i];
-            num[i] = temp;
-        }
+        while (num[i] < pivot);
+
+        do
+            j--;
+        while (num[j] > pivot);
+
+        if (i >= j)
+            break;
+
+        int temp = num[i];
+        num[i] = num[j];
+        num[j] = temp;
     }
 
-    int temp = num[i + 1];
-    num[i + 1] = pivot;
-    num[high] = temp;
-    int pi = i + 1;
-
-    quick_sort_helper(num, low, pi - 1);
-    quick_sort_helper(num, pi + 1, high);
+    quick_sort_helper(num, low, j);
+    quick_sort_helper(num, j + 1, high);
 }
 
 // heap sort
