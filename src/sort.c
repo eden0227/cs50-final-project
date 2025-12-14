@@ -290,19 +290,21 @@ void heap_sort(int *num, int len)
 
 void heap_sort_helper(int *num, int len, int i)
 {
-    int largest = i;
-    int left = 2 * i + 1;
-    int right = 2 * i + 2;
-
-    if (left < len && num[left] > num[largest])
-        largest = left;
-    if (right < len && num[right] > num[largest])
-        largest = right;
-
-    if (largest != i)
+    while (1)
     {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < len && num[left] > num[largest])
+            largest = left;
+        if (right < len && num[right] > num[largest])
+            largest = right;
+        if (largest == i)
+            break;
+
         swap(&num[largest], &num[i]);
-        heap_sort_helper(num, len, largest);
+        i = largest;
     }
 }
 
