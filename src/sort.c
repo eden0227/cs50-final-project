@@ -7,8 +7,8 @@
 
 void test_sort(char *name, void (*func)(int *, int), int *num, int len);
 void display_numbers(int *num, int len);
-void shuffle_array(int *num, int len);
 void compare_array(int *num, int len);
+void shuffle_array(int *num, int len);
 void bubble_sort(int *num, int len);
 void swap(int *a, int *b);
 void selection_sort(int *num, int len);
@@ -56,17 +56,6 @@ void display_numbers(int *num, int len)
     printf("\n");
 }
 
-void shuffle_array(int *num, int len)
-{
-    for (int i = len - 1; i > 0; i--)
-    {
-        int j = rand() % (i + 1);
-        int temp = num[i];
-        num[i] = num[j];
-        num[j] = temp;
-    }
-}
-
 void compare_array(int *num, int len)
 {
     int sorted[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
@@ -81,6 +70,17 @@ void compare_array(int *num, int len)
         }
     }
     printf("Sorted!\n");
+}
+
+void shuffle_array(int *num, int len)
+{
+    for (int i = len - 1; i > 0; i--)
+    {
+        int j = rand() % (i + 1);
+        int temp = num[i];
+        num[i] = num[j];
+        num[j] = temp;
+    }
 }
 
 void bubble_sort(int *num, int len)
