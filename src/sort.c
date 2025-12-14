@@ -18,6 +18,8 @@ void merge_sort_helper(int *num, int left, int right, int *temp);
 void insertion_sort_helper(int *num, int left, int right);
 void quick_sort(int *num, int len);
 void quick_sort_helper(int *num, int low, int high);
+void heap_sort(int *num, int len);
+void heap_sort_helper(int *num, int len, int i);
 
 int main(int argc, char *argv[])
 {
@@ -33,6 +35,7 @@ int main(int argc, char *argv[])
     test_sort("Insertion Sort", insertion_sort, num, len);
     test_sort("Merge Sort", merge_sort, num, len);
     test_sort("Quick Sort", quick_sort, num, len);
+    test_sort("Heap Sort", heap_sort, num, len);
 
     return 0;
 }
@@ -270,7 +273,38 @@ void quick_sort_helper(int *num, int low, int high)
     }
 }
 
-// heap sort
+void heap_sort(int *num, int len)
+{
+    if (len < 2)
+        return;
+
+    for (int i = (len / 2) - 1; i >= 0; i--)
+        heap_sort_helper(num, len, i);
+
+    for (int i = len - 1; i >= 0; i--)
+    {
+        swap(&num[0], &num[i]);
+        heap_sort_helper(num, i, 0);
+    }
+}
+
+void heap_sort_helper(int *num, int len, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < len && num[left] > num[largest])
+        largest = left;
+    if (right < len && num[right] > num[largest])
+        largest = right;
+
+    if (largest != i)
+    {
+        swap(&num[largest], &num[i]);
+        heap_sort_helper(num, len, largest);
+    }
+}
 
 // radix sort
 
