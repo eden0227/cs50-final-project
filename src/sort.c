@@ -221,37 +221,53 @@ void quick_sort(int *num, int len)
 
 void quick_sort_helper(int *num, int low, int high)
 {
-    if (low >= high)
-        return;
-
     if (high - low < INSERTION_THRESHOLD)
     {
         insertion_sort_helper(num, low, high);
         return;
     }
 
-    int pivot = num[(low + high) / 2];
-    int i = low - 1;
-    int j = high + 1;
-
-    while (1)
+    while (low < high)
     {
-        do
-            i++;
-        while (num[i] < pivot);
+        int mid = (low + high) / 2;
+        if (num[high] < num[low])
+            swap(&num[high], &num[low]);
+        if (num[mid] < num[low])
+            swap(&num[mid], &num[low]);
+        if (num[high] < num[mid])
+            swap(&num[high], &num[mid]);
 
-        do
-            j--;
-        while (num[j] > pivot);
+        int pivot = num[mid];
+        int i = low - 1;
+        int j = high + 1;
 
-        if (i >= j)
-            break;
+        while (1)
+        {
+            do
+                i++;
+            while (num[i] < pivot);
 
-        swap(&num[i], &num[j]);
+            do
+                j--;
+            while (num[j] > pivot);
+
+            if (i >= j)
+                break;
+
+            swap(&num[i], &num[j]);
+        }
+
+        if (j - low < high - j)
+        {
+            quick_sort_helper(num, low, j);
+            low = j + 1;
+        }
+        else
+        {
+            quick_sort_helper(num, j + 1, high);
+            high = j;
+        }
     }
-
-    quick_sort_helper(num, low, j);
-    quick_sort_helper(num, j + 1, high);
 }
 
 // heap sort
