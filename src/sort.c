@@ -10,6 +10,7 @@ void display_numbers(int *num, int len);
 void shuffle_array(int *num, int len);
 void compare_array(int *num, int len);
 void bubble_sort(int *num, int len);
+void swap(int *a, int *b);
 void selection_sort(int *num, int len);
 void insertion_sort(int *num, int len);
 void merge_sort(int *num, int len);
@@ -94,15 +95,20 @@ void bubble_sort(int *num, int len)
         {
             if (num[j] > num[j + 1])
             {
-                int temp = num[j];
-                num[j] = num[j + 1];
-                num[j + 1] = temp;
+                swap(&num[j], &num[j + 1]);
                 swapped = 1;
             }
         }
         if (!swapped)
             break;
     }
+}
+
+void swap(int *a, int *b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
 }
 
 void selection_sort(int *num, int len)
@@ -119,11 +125,7 @@ void selection_sort(int *num, int len)
                 min = j;
         }
         if (min != i)
-        {
-            int temp = num[i];
-            num[i] = num[min];
-            num[min] = temp;
-        }
+            swap(&num[i], &num[min]);
     }
 }
 
@@ -156,6 +158,7 @@ void merge_sort(int *num, int len)
         printf("Memory allocation failed\n");
         exit(1);
     }
+
     merge_sort_helper(num, 0, len - 1, temp);
     free(temp);
 }
@@ -221,6 +224,12 @@ void quick_sort_helper(int *num, int low, int high)
     if (low >= high)
         return;
 
+    if (high - low < INSERTION_THRESHOLD)
+    {
+        insertion_sort_helper(num, low, high);
+        return;
+    }
+
     int pivot = num[(low + high) / 2];
     int i = low - 1;
     int j = high + 1;
@@ -238,9 +247,7 @@ void quick_sort_helper(int *num, int low, int high)
         if (i >= j)
             break;
 
-        int temp = num[i];
-        num[i] = num[j];
-        num[j] = temp;
+        swap(&num[i], &num[j]);
     }
 
     quick_sort_helper(num, low, j);
