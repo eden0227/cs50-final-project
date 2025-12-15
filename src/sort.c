@@ -278,12 +278,25 @@ void heap_sort(int *num, int len)
     if (len < 2)
         return;
 
+    if (len <= INSERTION_THRESHOLD)
+    {
+        insertion_sort_helper(num, 0, len - 1);
+        return;
+    }
+
     for (int i = (len / 2) - 1; i >= 0; i--)
         heap_sort_helper(num, len, i);
 
     for (int i = len - 1; i >= 0; i--)
     {
         swap(&num[0], &num[i]);
+
+        if (i < INSERTION_THRESHOLD)
+        {
+            insertion_sort_helper(num, 0, i);
+            break;
+        }
+
         heap_sort_helper(num, i, 0);
     }
 }
