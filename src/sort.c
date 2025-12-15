@@ -4,6 +4,7 @@
 #include <time.h>
 
 #define INSERTION_THRESHOLD 8
+#define D 4
 
 void test_sort(char *name, void (*func)(int *, int), int *num, int len);
 void display_numbers(int *num, int len);
@@ -19,7 +20,7 @@ void insertion_sort_helper(int *num, int left, int right);
 void quick_sort(int *num, int len);
 void quick_sort_helper(int *num, int low, int high);
 void heap_sort(int *num, int len);
-void heap_sort_helper(int *num, int len, int i);
+void heap_sort_helper(int *num, int len, int parent);
 
 int main(int argc, char *argv[])
 {
@@ -284,7 +285,7 @@ void heap_sort(int *num, int len)
         return;
     }
 
-    for (int i = (len / 2) - 1; i >= 0; i--)
+    for (int i = (len - 2) / D; i >= 0; i--)
         heap_sort_helper(num, len, i);
 
     for (int i = len - 1; i >= 0; i--)
@@ -301,23 +302,24 @@ void heap_sort(int *num, int len)
     }
 }
 
-void heap_sort_helper(int *num, int len, int i)
+void heap_sort_helper(int *num, int len, int parent)
 {
     while (1)
     {
-        int largest = i;
-        int left = 2 * i + 1;
-        int right = 2 * i + 2;
+        int largest = parent;
 
-        if (left < len && num[left] > num[largest])
-            largest = left;
-        if (right < len && num[right] > num[largest])
-            largest = right;
-        if (largest == i)
+        for (int k = 0; k < D; k++)
+        {
+            int child = D * parent + (k + 1);
+            if (child < len && num[child] > num[largest])
+                largest = child;
+        }
+
+        if (largest == parent)
             break;
 
-        swap(&num[largest], &num[i]);
-        i = largest;
+        swap(&num[largest], &num[parent]);
+        parent = largest;
     }
 }
 
