@@ -336,8 +336,8 @@ void radix_sort(int *num, int len)
         return;
     }
 
-    int bucket[10][len];
     int bucket_count[10];
+    int *temp = malloc(len * sizeof(int));
 
     int divisor = 1;
     int largest = num[0];
@@ -354,17 +354,20 @@ void radix_sort(int *num, int len)
 
         for (int i = 0; i < len; i++)
         {
-            int current = (num[i] / divisor) % 10;
-            bucket[current][bucket_count[current]++] = num[i];
+            int digit = (num[i] / divisor) % 10;
+            bucket_count[digit]++;
         }
 
-        int i = 0;
-        for (int j = 0; j < 10; j++)
+        for (int i = 1; i < 10; i++)
+            bucket_count[i] += bucket_count[i - 1];
+
+        for (int i = len - 1; i >= 0; i--)
         {
-            for (int k = 0; k < bucket_count[j]; k++)
-                num[i++] = bucket[j][k];
+            int digit = (num[i] / divisor) % 10;
+            temp[--bucket_count[digit]] = num[i];
         }
 
+        memcpy(num, temp, len * sizeof(int));
         divisor *= 10;
     }
 }
