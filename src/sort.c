@@ -338,6 +338,11 @@ void radix_sort(int *num, int len)
 
     int bucket_count[10];
     int *temp = malloc(len * sizeof(int));
+    if (temp == NULL)
+    {
+        printf("Memory allocation failed\n");
+        exit(1);
+    }
 
     int divisor = 1;
     int largest = num[0];
@@ -370,4 +375,6 @@ void radix_sort(int *num, int len)
         memcpy(num, temp, len * sizeof(int));
         divisor *= 10;
     }
+
+    free(temp);
 }
