@@ -5,6 +5,7 @@
 
 #define INSERTION_THRESHOLD 8
 #define D 4
+#define BITS 32
 
 void test_sort(char *name, void (*func)(int *, int), int *num, int len);
 void display_numbers(int *num, int len);
@@ -336,7 +337,6 @@ void radix_sort(int *num, int len)
         return;
     }
 
-    const int bits = 32;
     int bucket_count[256];
     int *temp = malloc(len * sizeof(int));
     if (temp == NULL)
@@ -352,7 +352,7 @@ void radix_sort(int *num, int len)
             largest = num[i];
     }
 
-    for (int shift = 0; shift < bits; shift += 8)
+    for (int shift = 0; shift < BITS; shift += 8)
     {
         memset(bucket_count, 0, sizeof(bucket_count));
 
@@ -373,7 +373,7 @@ void radix_sort(int *num, int len)
 
         memcpy(num, temp, len * sizeof(int));
 
-        if (largest >> (shift + 8) == 0 && shift < bits - 8)
+        if (largest >> (shift + 8) == 0 && shift < BITS - 8)
             break;
     }
 
