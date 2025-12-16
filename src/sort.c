@@ -330,11 +330,17 @@ void radix_sort(int *num, int len)
     if (len < 2)
         return;
 
+    if (len <= INSERTION_THRESHOLD)
+    {
+        insertion_sort_helper(num, 0, len - 1);
+        return;
+    }
+
     int bucket[10][len];
     int bucket_count[10];
 
+    int divisor = 1;
     int largest = num[0];
-    int total_pass = 0;
 
     for (int i = 1; i < len; i++)
     {
@@ -342,17 +348,9 @@ void radix_sort(int *num, int len)
             largest = num[i];
     }
 
-    while (largest > 0)
+    while (largest / divisor > 0)
     {
-        total_pass++;
-        largest /= 10;
-    }
-
-    int divisor = 1;
-    for (int pass = 0; pass < total_pass; pass++)
-    {
-        for (int i = 0; i < 10; i++)
-            bucket_count[i] = 0;
+        memset(bucket_count, 0, sizeof(bucket_count));
 
         for (int i = 0; i < len; i++)
         {
@@ -370,5 +368,3 @@ void radix_sort(int *num, int len)
         divisor *= 10;
     }
 }
-
-// bucket sort
