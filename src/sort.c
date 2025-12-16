@@ -21,6 +21,7 @@ void quick_sort(int *num, int len);
 void quick_sort_helper(int *num, int low, int high);
 void heap_sort(int *num, int len);
 void heap_sort_helper(int *num, int len, int parent);
+void radix_sort(int *num, int len);
 
 int main(int argc, char *argv[])
 {
@@ -37,6 +38,7 @@ int main(int argc, char *argv[])
     test_sort("Merge Sort", merge_sort, num, len);
     test_sort("Quick Sort", quick_sort, num, len);
     test_sort("Heap Sort", heap_sort, num, len);
+    test_sort("Radix Sort", radix_sort, num, len);
 
     return 0;
 }
@@ -323,6 +325,50 @@ void heap_sort_helper(int *num, int len, int parent)
     }
 }
 
-// radix sort
+void radix_sort(int *num, int len)
+{
+    if (len < 2)
+        return;
+
+    int bucket[10][len];
+    int bucket_count[10];
+
+    int largest = num[0];
+    int total_pass = 0;
+
+    for (int i = 1; i < len; i++)
+    {
+        if (num[i] > largest)
+            largest = num[i];
+    }
+
+    while (largest > 0)
+    {
+        total_pass++;
+        largest /= 10;
+    }
+
+    int divisor = 1;
+    for (int pass = 0; pass < total_pass; pass++)
+    {
+        for (int i = 0; i < 10; i++)
+            bucket_count[i] = 0;
+
+        for (int i = 0; i < len; i++)
+        {
+            int current = (num[i] / divisor) % 10;
+            bucket[current][bucket_count[current]++] = num[i];
+        }
+
+        int i = 0;
+        for (int j = 0; j < 10; j++)
+        {
+            for (int k = 0; k < bucket_count[j]; k++)
+                num[i++] = bucket[j][k];
+        }
+
+        divisor *= 10;
+    }
+}
 
 // bucket sort
