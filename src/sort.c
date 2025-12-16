@@ -336,7 +336,8 @@ void radix_sort(int *num, int len)
         return;
     }
 
-    int bucket_count[10];
+    const int bits = 32;
+    int bucket_count[256];
     int *temp = malloc(len * sizeof(int));
     if (temp == NULL)
     {
@@ -344,36 +345,36 @@ void radix_sort(int *num, int len)
         exit(1);
     }
 
-    int divisor = 1;
     int largest = num[0];
-
     for (int i = 1; i < len; i++)
     {
         if (num[i] > largest)
             largest = num[i];
     }
 
-    while (largest / divisor > 0)
+    for (int shift = 0; shift < bits; shift += 8)
     {
         memset(bucket_count, 0, sizeof(bucket_count));
 
         for (int i = 0; i < len; i++)
         {
-            int digit = (num[i] / divisor) % 10;
+            int digit = (num[i] >> shift) & 0xff;
             bucket_count[digit]++;
         }
 
-        for (int i = 1; i < 10; i++)
+        for (int i = 1; i < 256; i++)
             bucket_count[i] += bucket_count[i - 1];
 
         for (int i = len - 1; i >= 0; i--)
         {
-            int digit = (num[i] / divisor) % 10;
+            int digit = (num[i] >> shift) & 0xff;
             temp[--bucket_count[digit]] = num[i];
         }
 
         memcpy(num, temp, len * sizeof(int));
-        divisor *= 10;
+
+        if (largest >> (shift + 8) == 0 && shift < bits - 8)
+            break;
     }
 
     free(temp);
