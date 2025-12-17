@@ -144,14 +144,14 @@ void insertion_sort(int *arr, int len)
 
     for (int i = 1; i < len; i++)
     {
-        int key = arr[i];
+        int min = arr[i];
         int j = i - 1;
-        while (j >= 0 && arr[j] > key)
+        while (j >= 0 && arr[j] > min)
         {
             arr[j + 1] = arr[j];
             j--;
         }
-        arr[j + 1] = key;
+        arr[j + 1] = min;
     }
 }
 
@@ -208,14 +208,14 @@ void insertion_sort_helper(int *arr, int left, int right)
 
     for (int i = left + 1; i <= right; i++)
     {
-        int key = arr[i];
+        int min = arr[i];
         int j = i - 1;
-        while (j >= left && arr[j] > key)
+        while (j >= left && arr[j] > min)
         {
             arr[j + 1] = arr[j];
             j--;
         }
-        arr[j + 1] = key;
+        arr[j + 1] = min;
     }
 }
 
@@ -310,20 +310,20 @@ void heap_sort_helper(int *arr, int len, int parent)
 {
     while (1)
     {
-        int largest = parent;
+        int max = parent;
 
         for (int k = 0; k < D; k++)
         {
             int child = D * parent + (k + 1);
-            if (child < len && arr[child] > arr[largest])
-                largest = child;
+            if (child < len && arr[child] > arr[max])
+                max = child;
         }
 
-        if (largest == parent)
+        if (max == parent)
             break;
 
-        swap(&arr[largest], &arr[parent]);
-        parent = largest;
+        swap(&arr[max], &arr[parent]);
+        parent = max;
     }
 }
 
@@ -346,11 +346,11 @@ void radix_sort(int *arr, int len)
         exit(1);
     }
 
-    int largest = arr[0];
+    int max = arr[0];
     for (int i = 1; i < len; i++)
     {
-        if (arr[i] > largest)
-            largest = arr[i];
+        if (arr[i] > max)
+            max = arr[i];
     }
 
     for (int shift = 0; shift < BITS; shift += 8)
@@ -374,7 +374,7 @@ void radix_sort(int *arr, int len)
 
         memcpy(arr, temp, len * sizeof(int));
 
-        if (largest >> (shift + 8) == 0 && shift < BITS - 8)
+        if (max >> (shift + 8) == 0 && shift < BITS - 8)
             break;
     }
 
