@@ -7,70 +7,70 @@
 #define D 4
 #define BITS 32
 
-void test_sort(char *name, void (*func)(int *, int), int *num, int len);
-void display_numbers(int *num, int len);
-void compare_array(int *num, int len);
-void shuffle_array(int *num, int len);
-void bubble_sort(int *num, int len);
+void test_sort(char *name, void (*func)(int *, int), int *arr, int len);
+void display_numbers(int *arr, int len);
+void compare_array(int *arr, int len);
+void shuffle_array(int *arr, int len);
+void bubble_sort(int *arr, int len);
 void swap(int *a, int *b);
-void selection_sort(int *num, int len);
-void insertion_sort(int *num, int len);
-void merge_sort(int *num, int len);
-void merge_sort_helper(int *num, int left, int right, int *temp);
-void insertion_sort_helper(int *num, int left, int right);
-void quick_sort(int *num, int len);
-void quick_sort_helper(int *num, int low, int high);
-void heap_sort(int *num, int len);
-void heap_sort_helper(int *num, int len, int parent);
-void radix_sort(int *num, int len);
+void selection_sort(int *arr, int len);
+void insertion_sort(int *arr, int len);
+void merge_sort(int *arr, int len);
+void merge_sort_helper(int *arr, int left, int right, int *temp);
+void insertion_sort_helper(int *arr, int left, int right);
+void quick_sort(int *arr, int len);
+void quick_sort_helper(int *arr, int low, int high);
+void heap_sort(int *arr, int len);
+void heap_sort_helper(int *arr, int len, int parent);
+void radix_sort(int *arr, int len);
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    int num[] = {30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
+    int arr[] = {30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
                  20, 19, 18, 17, 16, 15, 14, 13, 12, 11,
                  10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
-    int len = sizeof(num) / sizeof(num[0]);
+    int len = sizeof(arr) / sizeof(arr[0]);
 
-    test_sort("Bubble Sort", bubble_sort, num, len);
-    test_sort("Selection Sort", selection_sort, num, len);
-    test_sort("Insertion Sort", insertion_sort, num, len);
-    test_sort("Merge Sort", merge_sort, num, len);
-    test_sort("Quick Sort", quick_sort, num, len);
-    test_sort("Heap Sort", heap_sort, num, len);
-    test_sort("Radix Sort", radix_sort, num, len);
+    test_sort("Bubble Sort", bubble_sort, arr, len);
+    test_sort("Selection Sort", selection_sort, arr, len);
+    test_sort("Insertion Sort", insertion_sort, arr, len);
+    test_sort("Merge Sort", merge_sort, arr, len);
+    test_sort("Quick Sort", quick_sort, arr, len);
+    test_sort("Heap Sort", heap_sort, arr, len);
+    test_sort("Radix Sort", radix_sort, arr, len);
 
     return 0;
 }
 
-void test_sort(char *name, void (*func)(int *, int), int *num, int len)
+void test_sort(char *name, void (*func)(int *, int), int *arr, int len)
 {
     printf("%s:\n", name);
-    display_numbers(num, len);
-    func(num, len);
+    display_numbers(arr, len);
+    func(arr, len);
     printf("Result:\n");
-    display_numbers(num, len);
-    compare_array(num, len);
-    shuffle_array(num, len);
+    display_numbers(arr, len);
+    compare_array(arr, len);
+    shuffle_array(arr, len);
     printf("\n");
 }
 
-void display_numbers(int *num, int len)
+void display_numbers(int *arr, int len)
 {
     for (int i = 0; i < len; i++)
-        printf("%i ", num[i]);
+        printf("%i ", arr[i]);
     printf("\n");
 }
 
-void compare_array(int *num, int len)
+void compare_array(int *arr, int len)
 {
     int sorted[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                     11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                     21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
     for (int i = 0; i < len; i++)
     {
-        if (num[i] != sorted[i])
+        if (arr[i] != sorted[i])
         {
             printf("Not Sorted\n");
             return;
@@ -79,18 +79,18 @@ void compare_array(int *num, int len)
     printf("Sorted!\n");
 }
 
-void shuffle_array(int *num, int len)
+void shuffle_array(int *arr, int len)
 {
     for (int i = len - 1; i > 0; i--)
     {
         int j = rand() % (i + 1);
-        int temp = num[i];
-        num[i] = num[j];
-        num[j] = temp;
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }
 
-void bubble_sort(int *num, int len)
+void bubble_sort(int *arr, int len)
 {
     if (len < 2)
         return;
@@ -100,9 +100,9 @@ void bubble_sort(int *num, int len)
         int swapped = 0;
         for (int j = 0; j < len - i - 1; j++)
         {
-            if (num[j] > num[j + 1])
+            if (arr[j] > arr[j + 1])
             {
-                swap(&num[j], &num[j + 1]);
+                swap(&arr[j], &arr[j + 1]);
                 swapped = 1;
             }
         }
@@ -118,7 +118,7 @@ void swap(int *a, int *b)
     *b = temp;
 }
 
-void selection_sort(int *num, int len)
+void selection_sort(int *arr, int len)
 {
     if (len < 2)
         return;
@@ -128,33 +128,33 @@ void selection_sort(int *num, int len)
         int min = i;
         for (int j = i + 1; j < len; j++)
         {
-            if (num[j] < num[min])
+            if (arr[j] < arr[min])
                 min = j;
         }
         if (min != i)
-            swap(&num[i], &num[min]);
+            swap(&arr[i], &arr[min]);
     }
 }
 
-void insertion_sort(int *num, int len)
+void insertion_sort(int *arr, int len)
 {
     if (len < 2)
         return;
 
     for (int i = 1; i < len; i++)
     {
-        int key = num[i];
+        int key = arr[i];
         int j = i - 1;
-        while (j >= 0 && num[j] > key)
+        while (j >= 0 && arr[j] > key)
         {
-            num[j + 1] = num[j];
+            arr[j + 1] = arr[j];
             j--;
         }
-        num[j + 1] = key;
+        arr[j + 1] = key;
     }
 }
 
-void merge_sort(int *num, int len)
+void merge_sort(int *arr, int len)
 {
     if (len < 2)
         return;
@@ -166,85 +166,85 @@ void merge_sort(int *num, int len)
         exit(1);
     }
 
-    merge_sort_helper(num, 0, len - 1, temp);
+    merge_sort_helper(arr, 0, len - 1, temp);
     free(temp);
 }
 
-void merge_sort_helper(int *num, int left, int right, int *temp)
+void merge_sort_helper(int *arr, int left, int right, int *temp)
 {
     if (left >= right)
         return;
 
     if (right - left < INSERTION_THRESHOLD)
     {
-        insertion_sort_helper(num, left, right);
+        insertion_sort_helper(arr, left, right);
         return;
     }
 
     int mid = left + (right - left) / 2;
 
-    merge_sort_helper(num, left, mid, temp);
-    merge_sort_helper(num, mid + 1, right, temp);
+    merge_sort_helper(arr, left, mid, temp);
+    merge_sort_helper(arr, mid + 1, right, temp);
 
-    if (num[mid] <= num[mid + 1])
+    if (arr[mid] <= arr[mid + 1])
         return;
 
     int i = left, j = mid + 1, k = 0;
     while (i <= mid && j <= right)
-        temp[k++] = num[i] <= num[j] ? num[i++] : num[j++];
+        temp[k++] = arr[i] <= arr[j] ? arr[i++] : arr[j++];
     while (i <= mid)
-        temp[k++] = num[i++];
+        temp[k++] = arr[i++];
     while (j <= right)
-        temp[k++] = num[j++];
+        temp[k++] = arr[j++];
 
-    memcpy(num + left, temp, k * sizeof(int));
+    memcpy(arr + left, temp, k * sizeof(int));
 }
 
-void insertion_sort_helper(int *num, int left, int right)
+void insertion_sort_helper(int *arr, int left, int right)
 {
     if (right - left < 1)
         return;
 
     for (int i = left + 1; i <= right; i++)
     {
-        int key = num[i];
+        int key = arr[i];
         int j = i - 1;
-        while (j >= left && num[j] > key)
+        while (j >= left && arr[j] > key)
         {
-            num[j + 1] = num[j];
+            arr[j + 1] = arr[j];
             j--;
         }
-        num[j + 1] = key;
+        arr[j + 1] = key;
     }
 }
 
-void quick_sort(int *num, int len)
+void quick_sort(int *arr, int len)
 {
     if (len < 2)
         return;
 
-    quick_sort_helper(num, 0, len - 1);
+    quick_sort_helper(arr, 0, len - 1);
 }
 
-void quick_sort_helper(int *num, int low, int high)
+void quick_sort_helper(int *arr, int low, int high)
 {
     if (high - low < INSERTION_THRESHOLD)
     {
-        insertion_sort_helper(num, low, high);
+        insertion_sort_helper(arr, low, high);
         return;
     }
 
     while (low < high)
     {
         int mid = (low + high) / 2;
-        if (num[high] < num[low])
-            swap(&num[high], &num[low]);
-        if (num[mid] < num[low])
-            swap(&num[mid], &num[low]);
-        if (num[high] < num[mid])
-            swap(&num[high], &num[mid]);
+        if (arr[high] < arr[low])
+            swap(&arr[high], &arr[low]);
+        if (arr[mid] < arr[low])
+            swap(&arr[mid], &arr[low]);
+        if (arr[high] < arr[mid])
+            swap(&arr[high], &arr[mid]);
 
-        int pivot = num[mid];
+        int pivot = arr[mid];
         int i = low - 1;
         int j = high + 1;
 
@@ -252,60 +252,60 @@ void quick_sort_helper(int *num, int low, int high)
         {
             do
                 i++;
-            while (num[i] < pivot);
+            while (arr[i] < pivot);
 
             do
                 j--;
-            while (num[j] > pivot);
+            while (arr[j] > pivot);
 
             if (i >= j)
                 break;
 
-            swap(&num[i], &num[j]);
+            swap(&arr[i], &arr[j]);
         }
 
         if (j - low < high - j)
         {
-            quick_sort_helper(num, low, j);
+            quick_sort_helper(arr, low, j);
             low = j + 1;
         }
         else
         {
-            quick_sort_helper(num, j + 1, high);
+            quick_sort_helper(arr, j + 1, high);
             high = j;
         }
     }
 }
 
-void heap_sort(int *num, int len)
+void heap_sort(int *arr, int len)
 {
     if (len < 2)
         return;
 
     if (len <= INSERTION_THRESHOLD)
     {
-        insertion_sort_helper(num, 0, len - 1);
+        insertion_sort_helper(arr, 0, len - 1);
         return;
     }
 
     for (int i = (len - 2) / D; i >= 0; i--)
-        heap_sort_helper(num, len, i);
+        heap_sort_helper(arr, len, i);
 
     for (int i = len - 1; i >= 0; i--)
     {
-        swap(&num[0], &num[i]);
+        swap(&arr[0], &arr[i]);
 
         if (i < INSERTION_THRESHOLD)
         {
-            insertion_sort_helper(num, 0, i);
+            insertion_sort_helper(arr, 0, i);
             break;
         }
 
-        heap_sort_helper(num, i, 0);
+        heap_sort_helper(arr, i, 0);
     }
 }
 
-void heap_sort_helper(int *num, int len, int parent)
+void heap_sort_helper(int *arr, int len, int parent)
 {
     while (1)
     {
@@ -314,26 +314,26 @@ void heap_sort_helper(int *num, int len, int parent)
         for (int k = 0; k < D; k++)
         {
             int child = D * parent + (k + 1);
-            if (child < len && num[child] > num[largest])
+            if (child < len && arr[child] > arr[largest])
                 largest = child;
         }
 
         if (largest == parent)
             break;
 
-        swap(&num[largest], &num[parent]);
+        swap(&arr[largest], &arr[parent]);
         parent = largest;
     }
 }
 
-void radix_sort(int *num, int len)
+void radix_sort(int *arr, int len)
 {
     if (len < 2)
         return;
 
     if (len <= INSERTION_THRESHOLD)
     {
-        insertion_sort_helper(num, 0, len - 1);
+        insertion_sort_helper(arr, 0, len - 1);
         return;
     }
 
@@ -345,11 +345,11 @@ void radix_sort(int *num, int len)
         exit(1);
     }
 
-    int largest = num[0];
+    int largest = arr[0];
     for (int i = 1; i < len; i++)
     {
-        if (num[i] > largest)
-            largest = num[i];
+        if (arr[i] > largest)
+            largest = arr[i];
     }
 
     for (int shift = 0; shift < BITS; shift += 8)
@@ -358,7 +358,7 @@ void radix_sort(int *num, int len)
 
         for (int i = 0; i < len; i++)
         {
-            int digit = (num[i] >> shift) & 0xff;
+            int digit = (arr[i] >> shift) & 0xff;
             bucket_count[digit]++;
         }
 
@@ -367,11 +367,11 @@ void radix_sort(int *num, int len)
 
         for (int i = len - 1; i >= 0; i--)
         {
-            int digit = (num[i] >> shift) & 0xff;
-            temp[--bucket_count[digit]] = num[i];
+            int digit = (arr[i] >> shift) & 0xff;
+            temp[--bucket_count[digit]] = arr[i];
         }
 
-        memcpy(num, temp, len * sizeof(int));
+        memcpy(arr, temp, len * sizeof(int));
 
         if (largest >> (shift + 8) == 0 && shift < BITS - 8)
             break;
