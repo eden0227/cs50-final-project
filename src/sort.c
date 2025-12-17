@@ -7,9 +7,9 @@
 #define D 4
 #define BITS 32
 
-void test_sort(char *name, void (*func)(int *, int), int *arr, int len);
+void test_sort(char *name, void (*func)(int *, int), int *arr, int len, int *sorted);
 void display_numbers(int *arr, int len);
-void compare_array(int *arr, int len);
+void compare_array(int *arr, int len, int *sorted);
 void shuffle_array(int *arr, int len);
 void bubble_sort(int *arr, int len);
 void swap(int *a, int *b);
@@ -28,30 +28,34 @@ int main(int argc, char *argv[])
 {
     srand(time(NULL));
 
-    int arr[] = {30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
-                 20, 19, 18, 17, 16, 15, 14, 13, 12, 11,
-                 10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
+    int arr[30] = {30, 29, 28, 27, 26, 25, 24, 23, 22, 21,
+                   20, 19, 18, 17, 16, 15, 14, 13, 12, 11,
+                   10, 9, 8, 7, 6, 5, 4, 3, 2, 1};
     int len = sizeof(arr) / sizeof(arr[0]);
 
-    test_sort("Bubble Sort", bubble_sort, arr, len);
-    test_sort("Selection Sort", selection_sort, arr, len);
-    test_sort("Insertion Sort", insertion_sort, arr, len);
-    test_sort("Merge Sort", merge_sort, arr, len);
-    test_sort("Quick Sort", quick_sort, arr, len);
-    test_sort("Heap Sort", heap_sort, arr, len);
-    test_sort("Radix Sort", radix_sort, arr, len);
+    int sorted[30] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                      11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                      21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
+
+    test_sort("Bubble Sort", bubble_sort, arr, len, sorted);
+    test_sort("Selection Sort", selection_sort, arr, len, sorted);
+    test_sort("Insertion Sort", insertion_sort, arr, len, sorted);
+    test_sort("Merge Sort", merge_sort, arr, len, sorted);
+    test_sort("Quick Sort", quick_sort, arr, len, sorted);
+    test_sort("Heap Sort", heap_sort, arr, len, sorted);
+    test_sort("Radix Sort", radix_sort, arr, len, sorted);
 
     return 0;
 }
 
-void test_sort(char *name, void (*func)(int *, int), int *arr, int len)
+void test_sort(char *name, void (*func)(int *, int), int *arr, int len, int *sorted)
 {
     printf("%s:\n", name);
     display_numbers(arr, len);
     func(arr, len);
     printf("Result:\n");
     display_numbers(arr, len);
-    compare_array(arr, len);
+    compare_array(arr, len, sorted);
     shuffle_array(arr, len);
     printf("\n");
 }
@@ -63,11 +67,8 @@ void display_numbers(int *arr, int len)
     printf("\n");
 }
 
-void compare_array(int *arr, int len)
+void compare_array(int *arr, int len, int *sorted)
 {
-    int sorted[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                    21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
     for (int i = 0; i < len; i++)
     {
         if (arr[i] != sorted[i])
