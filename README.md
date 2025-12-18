@@ -92,6 +92,12 @@
 
 ## Changelog
 
+### [v0.5] - 2025-12-17
+
+-   Add quick, heap, radix sorting algorithms ([src](src))
+-   Optimise all sorting algorithms
+-   Improve test algorithms
+
 ### [v0.4] - 2025-12-8
 
 -   Add basic tests for C sorting algorithms (bubble, selection, insertion, merge) ([src](src))
