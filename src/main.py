@@ -1,6 +1,15 @@
 import argparse
 import csv
+import ctypes
 
+dll_path = r'C:\Users\USER\Desktop\cs50-final-project\src\program.dll'
+lib = ctypes.CDLL(dll_path)
+
+class KeyValuePair(ctypes.Structure):
+    _fields_ = [("key", ctypes.c_char_p),
+                ("value", ctypes.c_int)]
+
+lib.sort_by_value.argtypes = [ctypes.POINTER(KeyValuePair), ctypes.c_int]
 
 def is_stable(rows):
     for (id1, val1), (id2, val2) in zip(rows[1:], rows[2:]):
@@ -59,8 +68,32 @@ def main():
         return ""
     
     if args.sorter == 'default':
-        print('Default')
-        sorted_rows = sorted(data_rows, key=sort_key)
+        print('qsort')
+
+        length = len(data_rows)
+        c_array = (KeyValuePair * length)()
+
+        for i, (key, value) in enumerate(data_rows):
+            c_array[i].key = key.encode('utf-8')
+            c_array[i].value = int(value)
+
+        lib.sort_by_value(c_array, length)
+    
+        sorted_rows = []
+        for i in range(length):
+            key_bytes = None
+            if c_array[i].key:
+                try:
+                    key_bytes = ctypes.string_at(c_array[i].key)
+                    key = key_bytes.decode('utf-8')
+                except:
+                    key = f'key_{i}'
+            else:
+                key = f'key_{i}'
+
+            value = c_array[i].value
+            sorted_rows.append([key, value])
+
     elif args.sorter == 'merge':
         print('Merge')
         sorted_rows = sorted(data_rows, key=sort_key)
