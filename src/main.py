@@ -2,6 +2,12 @@ import argparse
 import csv
 
 
+def is_stable(rows):
+    for (id1, val1), (id2, val2) in zip(rows[1:], rows[2:]):
+        if val1 == val2 and id1 > id2:
+            return False
+    return True
+
 def main():
     parser = argparse.ArgumentParser(
         description='Python controller for sorting CSV data file with integrated C sorting algorithms'
@@ -68,9 +74,14 @@ def main():
         if header:
             writer.writerow(header)
         writer.writerows(sorted_rows)
+        stable = is_stable(sorted_rows)
 
     if args.benchmark:
-        print('hello, world')
+        if stable:
+            print('Stable')
+        else:
+            print('Not stable')
+
 
 if __name__ == "__main__":
     main()
