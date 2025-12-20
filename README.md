@@ -152,6 +152,7 @@
 
 ### References
 
+-   https://www.w3schools.com/
 -   https://docs.python.org/3/
 -   https://www.sortvisualizer.com/
 
