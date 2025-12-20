@@ -92,6 +92,10 @@
 
 ## Changelog
 
+### [v0.7] - 2025-12-21
+
+-   Integrate custom C program with Python CLI controller ([src](src))
+
 ### [v0.6] - 2025-12-20
 
 -   Add working prototype for Python CLI controller ([src](src))
