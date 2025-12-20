@@ -92,6 +92,11 @@
 
 ## Changelog
 
+### [v0.6] - 2025-12-20
+
+-   Add working prototype for Python CLI controller ([src](src))
+-   Add Python script to generate CSV data files for testing ([src](src))
+
 ### [v0.5] - 2025-12-17
 
 -   Add quick, heap, radix sorting algorithms ([src](src))
