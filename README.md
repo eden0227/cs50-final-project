@@ -92,28 +92,34 @@
 
 ## Changelog
 
+### [v0.8] - 2025-12-22
+
+-   Refactor main.py and program.c
+-   Add qsort, merge and radix sort for C sorting algorithms in Python CLI controller
+-   Add time measurement (ns) from Python module for performance benchmark
+
 ### [v0.7] - 2025-12-21
 
--   Integrate custom C program with Python CLI controller ([src](src))
+-   Integrate custom C program with Python CLI controller
 
 ### [v0.6] - 2025-12-20
 
--   Add working prototype for Python CLI controller ([src](src))
--   Add Python script to generate CSV data files for testing ([src](src))
+-   Add working prototype for Python CLI controller
+-   Add Python script to generate CSV data files for testing
 
 ### [v0.5] - 2025-12-17
 
--   Add quick, heap, radix sorting algorithms ([src](src))
+-   Add quick, heap, radix sorting algorithms
 -   Optimise all sorting algorithms
--   Improve test algorithms
+-   Refactor test algorithms
 
 ### [v0.4] - 2025-12-8
 
--   Add basic tests for C sorting algorithms (bubble, selection, insertion, merge) ([src](src))
+-   Add basic tests for C sorting algorithms (bubble, selection, insertion, merge)
 
 ### [v0.3] - 2025-12-7
 
--   Add Python and C boilerplates ([src](src))
+-   Add Python and C boilerplates
 -   Update Makefile for C build compilation
 
 ### [v0.2] - 2025-12-6
