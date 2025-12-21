@@ -1,6 +1,8 @@
 import argparse
 import csv
 import ctypes
+import time
+
 
 dll_path = r'C:\Users\USER\Desktop\cs50-final-project\src\program.dll'
 lib = ctypes.CDLL(dll_path)
@@ -9,32 +11,88 @@ class KeyValuePair(ctypes.Structure):
     _fields_ = [("key", ctypes.c_char_p),
                 ("value", ctypes.c_int)]
 
-lib.sort_by_value.argtypes = [ctypes.POINTER(KeyValuePair), ctypes.c_int]
+argtypes = [ctypes.POINTER(KeyValuePair), ctypes.c_int]
+restype = None
 
-def is_stable(rows):
+for func_name in ('c_qsort', 'merge_sort', 'radix_sort'):
+    getattr(lib, func_name).argtypes = argtypes
+    getattr(lib, func_name).restype = restype
+
+
+def c_sorted(data_rows, sorter):
+    length = len(data_rows)
+    c_array = (KeyValuePair * length)()
+    for i, (key, value) in enumerate(data_rows):
+        c_array[i].key = key.encode('utf-8')
+        c_array[i].value = int(value)
+
+    start = time.perf_counter_ns()
+    if sorter == 'qsort':
+        lib.c_qsort(c_array, length)
+    elif sorter == 'merge':
+        lib.merge_sort(c_array, length)
+    elif sorter == 'radix':
+        lib.radix_sort(c_array, length)
+    end = time.perf_counter_ns()
+
+    sorted_rows = []
+    for i in range(length):
+        value = c_array[i].value
+        c_pointer = c_array[i].key
+        if c_pointer:
+            try:
+                c_string_bytes = ctypes.string_at(c_pointer)
+                key = c_string_bytes.decode('utf-8')
+            except:
+                key = f'key_{i}'
+        else:
+            key = f'key_{i}'
+        sorted_rows.append([key, value])
+
+    return sorted_rows, start, end
+
+
+def check_rows_header(rows, has_header):
+    if has_header and rows:
+        return rows[0], rows[1:]
+    else:
+        return None, rows
+
+
+def sort_key(row):
+    sort_column = 1
+    if sort_column < len(row):
+        try:
+            return float(row[sort_column])
+        except ValueError:
+            return row[sort_column]
+    return ""
+
+
+def check_stability(rows):
     for (id1, val1), (id2, val2) in zip(rows[1:], rows[2:]):
         if val1 == val2 and id1 > id2:
             return False
     return True
 
+
 def main():
     parser = argparse.ArgumentParser(
-        description='Python controller for sorting CSV data file with integrated C sorting algorithms'
+        description='Python CLI with Integrated C Sorting Algorithms for Practical, Large-Scale Data and Performance Benchmarking'
     )
-
     parser.add_argument(
         '-f',
         '--file',
         type=str,
         required=True,
-        help='CSV data file to sort'
+        help='Select data file (.csv)'
     )
     parser.add_argument(
         '-s',
         '--sorter',
-        choices=['default', 'merge', 'radix'],
+        choices=['default', 'qsort', 'merge', 'radix'],
         default='default',
-        help='Sorting algorithm to choose'
+        help='Select sorting algorithm'
     )
     parser.add_argument(
         '-b',
@@ -42,64 +100,33 @@ def main():
         action='store_true',
         help='Enable benchmarking'
     )
-
     args = parser.parse_args()
-    
+
+
     with open(args.file, 'r', newline='') as file:
         reader = csv.reader(file)
         rows = list(reader)
+    header, data_rows = check_rows_header(rows, True)
 
-    sort_column = 1
-    has_header = True
 
-    header = None
-    if has_header and rows:
-        header = rows[0]
-        data_rows = rows[1:]
-    else:
-        data_rows = rows
-
-    def sort_key(row):
-        if sort_column < len(row):
-            try:
-                return float(row[sort_column])
-            except ValueError:
-                return row[sort_column]
-        return ""
-    
     if args.sorter == 'default':
+        print('sorted')
+        start = time.perf_counter_ns()
+        sorted_rows = sorted(data_rows, key=sort_key)
+        end = time.perf_counter_ns()
+
+    elif args.sorter == 'qsort':
         print('qsort')
-
-        length = len(data_rows)
-        c_array = (KeyValuePair * length)()
-
-        for i, (key, value) in enumerate(data_rows):
-            c_array[i].key = key.encode('utf-8')
-            c_array[i].value = int(value)
-
-        lib.sort_by_value(c_array, length)
-    
-        sorted_rows = []
-        for i in range(length):
-            key_bytes = None
-            if c_array[i].key:
-                try:
-                    key_bytes = ctypes.string_at(c_array[i].key)
-                    key = key_bytes.decode('utf-8')
-                except:
-                    key = f'key_{i}'
-            else:
-                key = f'key_{i}'
-
-            value = c_array[i].value
-            sorted_rows.append([key, value])
+        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
 
     elif args.sorter == 'merge':
-        print('Merge')
-        sorted_rows = sorted(data_rows, key=sort_key)
+        print('merge')
+        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+
     elif args.sorter == 'radix':
-        print('Radix')
-        sorted_rows = sorted(data_rows, key=sort_key)
+        print('radix')
+        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+
 
     output_file = args.file.replace('.csv', '_sorted.csv')
     with open(output_file, 'w', newline='') as file:
@@ -107,13 +134,15 @@ def main():
         if header:
             writer.writerow(header)
         writer.writerows(sorted_rows)
-        stable = is_stable(sorted_rows)
+
 
     if args.benchmark:
+        stable = check_stability(sorted_rows)
+        print(f"{(end - start) / 1e6:.4f}ms")
         if stable:
-            print('Stable')
+            print('stable')
         else:
-            print('Not stable')
+            print('not stable')
 
 
 if __name__ == "__main__":
