@@ -3,7 +3,7 @@
 #include <string.h>
 #include <time.h>
 
-#define INSERTION_THRESHOLD 8
+#define INSERTION_THRESHOLD 16
 #define D 4
 #define BITS 32
 
