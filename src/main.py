@@ -37,13 +37,14 @@ def default_sorted(data_rows):
 
 
 def c_sorted(data_rows, sorter):
+    start = time.perf_counter_ns()
     length = len(data_rows)
     c_array = (KeyValuePair * length)()
     for i, (key, value) in enumerate(data_rows):
         c_array[i].key = key.encode('utf-8')
         c_array[i].value = int(value)
 
-    start = time.perf_counter_ns()
+    c_start = time.perf_counter_ns()
     if sorter == 'qsort':
         lib.c_qsort(c_array, length)
     elif sorter == 'merge':
@@ -54,7 +55,7 @@ def c_sorted(data_rows, sorter):
         lib.heap_sort(c_array, length)
     elif sorter == 'radix':
         lib.radix_sort(c_array, length)
-    end = time.perf_counter_ns()
+    c_end = time.perf_counter_ns()
 
     sorted_rows = []
     for i in range(length):
@@ -70,7 +71,8 @@ def c_sorted(data_rows, sorter):
             key = f'key_{i}'
         sorted_rows.append([key, value])
 
-    return sorted_rows, start, end
+    end = time.perf_counter_ns()
+    return sorted_rows, start, end, c_start, c_end
 
 
 def check_rows_header(rows, has_header):
@@ -78,6 +80,13 @@ def check_rows_header(rows, has_header):
         return rows[0], rows[1:]
     else:
         return None, rows
+
+
+def get_time_multiplier(time):
+    if time == 's':
+        return 1e9
+    elif time == 'ms':
+        return 1e6
 
 
 def check_stability(rows):
@@ -111,6 +120,13 @@ def main():
         action='store_true',
         help='Enable benchmarking'
     )
+    parser.add_argument(
+        '-t',
+        '--time',
+        choices=['s', 'ms'],
+        default='ms',
+        help='Select time unit'
+    )
     args = parser.parse_args()
 
 
@@ -126,23 +142,23 @@ def main():
 
     elif args.sorter == 'qsort':
         print('qsort')
-        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+        sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
 
     elif args.sorter == 'merge':
         print('merge')
-        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+        sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
 
     elif args.sorter == 'quick':
         print('quick')
-        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+        sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
     
     elif args.sorter == 'heap':
         print('heap')
-        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+        sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
     
     elif args.sorter == 'radix':
         print('radix')
-        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+        sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
 
 
     output_file = args.file.replace('.csv', '_sorted.csv')
@@ -154,8 +170,12 @@ def main():
 
 
     if args.benchmark:
+        ns_conversion = get_time_multiplier(args.time)
         stable = check_stability(sorted_rows)
-        print(f"{(end - start) / 1e6:.4f}ms")
+
+        print(f"{(end - start) / ns_conversion:.4f}{args.time}")
+        if args.sorter != 'default':
+            print(f"{(c_end - c_start) / ns_conversion:.4f}{args.time}")
         if stable:
             print('stable')
         else:
