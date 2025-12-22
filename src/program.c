@@ -3,6 +3,7 @@
 #include <string.h>
 
 #define INSERTION_THRESHOLD 16
+#define D 4
 #define BITS 32
 
 typedef struct
@@ -16,6 +17,11 @@ int compare(const void *a, const void *b);
 void merge_sort(key_value_pair *arr, int len);
 void merge_sort_helper(key_value_pair *arr, int left, int right, key_value_pair *temp);
 void insertion_sort_helper(key_value_pair *arr, int left, int right);
+void quick_sort(key_value_pair *arr, int len);
+void quick_sort_helper(key_value_pair *arr, int low, int high);
+void swap(key_value_pair *a, key_value_pair *b);
+void heap_sort(key_value_pair *arr, int len);
+void heap_sort_helper(key_value_pair *arr, int len, int parent);
 void radix_sort(key_value_pair *arr, int len);
 
 void c_qsort(key_value_pair *arr, int len)
@@ -89,6 +95,121 @@ void insertion_sort_helper(key_value_pair *arr, int left, int right)
             j--;
         }
         arr[j + 1] = min;
+    }
+}
+
+void quick_sort(key_value_pair *arr, int len)
+{
+    if (len < 2)
+        return;
+
+    quick_sort_helper(arr, 0, len - 1);
+}
+
+void quick_sort_helper(key_value_pair *arr, int low, int high)
+{
+    if (high - low < INSERTION_THRESHOLD)
+    {
+        insertion_sort_helper(arr, low, high);
+        return;
+    }
+
+    while (low < high)
+    {
+        int mid = (low + high) / 2;
+        if (arr[high].value < arr[low].value)
+            swap(&arr[high], &arr[low]);
+        if (arr[mid].value < arr[low].value)
+            swap(&arr[mid], &arr[low]);
+        if (arr[high].value < arr[mid].value)
+            swap(&arr[high], &arr[mid]);
+
+        int pivot = arr[mid].value;
+        int i = low - 1;
+        int j = high + 1;
+
+        while (1)
+        {
+            do
+                i++;
+            while (arr[i].value < pivot);
+
+            do
+                j--;
+            while (arr[j].value > pivot);
+
+            if (i >= j)
+                break;
+
+            swap(&arr[i], &arr[j]);
+        }
+
+        if (j - low < high - j)
+        {
+            quick_sort_helper(arr, low, j);
+            low = j + 1;
+        }
+        else
+        {
+            quick_sort_helper(arr, j + 1, high);
+            high = j;
+        }
+    }
+}
+
+void swap(key_value_pair *a, key_value_pair *b)
+{
+    key_value_pair temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void heap_sort(key_value_pair *arr, int len)
+{
+    if (len < 2)
+        return;
+
+    if (len <= INSERTION_THRESHOLD)
+    {
+        insertion_sort_helper(arr, 0, len - 1);
+        return;
+    }
+
+    for (int i = (len - 2) / D; i >= 0; i--)
+        heap_sort_helper(arr, len, i);
+
+    for (int i = len - 1; i >= 0; i--)
+    {
+        swap(&arr[0], &arr[i]);
+
+        if (i < INSERTION_THRESHOLD)
+        {
+            insertion_sort_helper(arr, 0, i);
+            break;
+        }
+
+        heap_sort_helper(arr, i, 0);
+    }
+}
+
+void heap_sort_helper(key_value_pair *arr, int len, int parent)
+{
+    while (1)
+    {
+        int max = parent;
+
+        for (int k = 0; k < D; k++)
+        {
+            int child = D * parent + (k + 1);
+            if (child < len && arr[child].value > arr[max].value)
+                max = child;
+        }
+
+        if (max == parent)
+            break;
+
+        swap(&arr[max], &arr[parent]);
+        parent = max;
     }
 }
 

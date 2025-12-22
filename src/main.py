@@ -14,9 +14,26 @@ class KeyValuePair(ctypes.Structure):
 argtypes = [ctypes.POINTER(KeyValuePair), ctypes.c_int]
 restype = None
 
-for func_name in ('c_qsort', 'merge_sort', 'radix_sort'):
+for func_name in ('c_qsort', 'merge_sort', 'quick_sort', 'heap_sort', 'radix_sort'):
     getattr(lib, func_name).argtypes = argtypes
     getattr(lib, func_name).restype = restype
+
+
+def sort_key(row):
+    sort_column = 1
+    if sort_column < len(row):
+        try:
+            return float(row[sort_column])
+        except ValueError:
+            return row[sort_column]
+    return ""
+
+
+def default_sorted(data_rows):
+    start = time.perf_counter_ns()
+    sorted_rows = sorted(data_rows, key=sort_key)
+    end = time.perf_counter_ns()
+    return sorted_rows, start, end
 
 
 def c_sorted(data_rows, sorter):
@@ -31,6 +48,10 @@ def c_sorted(data_rows, sorter):
         lib.c_qsort(c_array, length)
     elif sorter == 'merge':
         lib.merge_sort(c_array, length)
+    elif sorter == 'quick':
+        lib.quick_sort(c_array, length)
+    elif sorter == 'heap':
+        lib.heap_sort(c_array, length)
     elif sorter == 'radix':
         lib.radix_sort(c_array, length)
     end = time.perf_counter_ns()
@@ -59,16 +80,6 @@ def check_rows_header(rows, has_header):
         return None, rows
 
 
-def sort_key(row):
-    sort_column = 1
-    if sort_column < len(row):
-        try:
-            return float(row[sort_column])
-        except ValueError:
-            return row[sort_column]
-    return ""
-
-
 def check_stability(rows):
     for (id1, val1), (id2, val2) in zip(rows[1:], rows[2:]):
         if val1 == val2 and id1 > id2:
@@ -90,7 +101,7 @@ def main():
     parser.add_argument(
         '-s',
         '--sorter',
-        choices=['default', 'qsort', 'merge', 'radix'],
+        choices=['default', 'qsort', 'merge', 'quick', 'heap', 'radix'],
         default='default',
         help='Select sorting algorithm'
     )
@@ -111,9 +122,7 @@ def main():
 
     if args.sorter == 'default':
         print('sorted')
-        start = time.perf_counter_ns()
-        sorted_rows = sorted(data_rows, key=sort_key)
-        end = time.perf_counter_ns()
+        sorted_rows, start, end = default_sorted(data_rows)
 
     elif args.sorter == 'qsort':
         print('qsort')
@@ -123,6 +132,14 @@ def main():
         print('merge')
         sorted_rows, start, end = c_sorted(data_rows, args.sorter)
 
+    elif args.sorter == 'quick':
+        print('quick')
+        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+    
+    elif args.sorter == 'heap':
+        print('heap')
+        sorted_rows, start, end = c_sorted(data_rows, args.sorter)
+    
     elif args.sorter == 'radix':
         print('radix')
         sorted_rows, start, end = c_sorted(data_rows, args.sorter)
