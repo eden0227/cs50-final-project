@@ -95,6 +95,7 @@
 ### [v0.9] - 2025-12-23
 
 -   Add quick and heap sorting algorithms
+-   Optimise program.dll through compiler flags
 
 ### [v0.8] - 2025-12-22
 
