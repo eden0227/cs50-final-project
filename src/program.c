@@ -24,7 +24,7 @@ void heap_sort(key_value_pair *arr, int len);
 void heap_sort_helper(key_value_pair *arr, int len, int parent);
 void radix_sort(key_value_pair *arr, int len);
 
-void c_qsort(key_value_pair *arr, int len)
+__declspec(dllexport) void c_qsort(key_value_pair *arr, int len)
 {
     qsort(arr, len, sizeof(key_value_pair), compare);
 }
@@ -34,7 +34,7 @@ int compare(const void *a, const void *b)
     return ((key_value_pair *)a)->value - ((key_value_pair *)b)->value;
 }
 
-void merge_sort(key_value_pair *arr, int len)
+__declspec(dllexport) void merge_sort(key_value_pair *arr, int len)
 {
     if (len < 2)
         return;
@@ -98,7 +98,7 @@ void insertion_sort_helper(key_value_pair *arr, int left, int right)
     }
 }
 
-void quick_sort(key_value_pair *arr, int len)
+__declspec(dllexport) void quick_sort(key_value_pair *arr, int len)
 {
     if (len < 2)
         return;
@@ -164,7 +164,7 @@ void swap(key_value_pair *a, key_value_pair *b)
     *b = temp;
 }
 
-void heap_sort(key_value_pair *arr, int len)
+__declspec(dllexport) void heap_sort(key_value_pair *arr, int len)
 {
     if (len < 2)
         return;
@@ -213,7 +213,7 @@ void heap_sort_helper(key_value_pair *arr, int len, int parent)
     }
 }
 
-void radix_sort(key_value_pair *arr, int len)
+__declspec(dllexport) void radix_sort(key_value_pair *arr, int len)
 {
     if (len < 2)
         return;
