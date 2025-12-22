@@ -92,6 +92,10 @@
 
 ## Changelog
 
+### [v0.9] - 2025-12-23
+
+-   Add quick and heap sorting algorithms
+
 ### [v0.8] - 2025-12-22
 
 -   Refactor main.py and program.c
