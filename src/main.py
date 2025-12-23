@@ -82,6 +82,24 @@ def check_rows_header(rows, has_header):
         return None, rows
 
 
+def read_csv(filename):
+    print(f'Loading data from {filename}')
+    with open(filename, 'r', newline='') as file:
+        reader = csv.reader(file)
+        rows = list(reader)
+    header, data_rows = check_rows_header(rows, True)
+    return header, data_rows
+
+
+def write_csv(filename, header, sorted_rows):
+    print(f'Writing data into {filename}')
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        if header:
+            writer.writerow(header)
+        writer.writerows(sorted_rows)
+
+
 def get_time_divisor(time):
     if time == 's':
         return 1e9
@@ -129,57 +147,51 @@ def main():
     )
     args = parser.parse_args()
 
-
-    with open(args.file, 'r', newline='') as file:
-        reader = csv.reader(file)
-        rows = list(reader)
-    header, data_rows = check_rows_header(rows, True)
-
+    header, data_rows = read_csv(args.file)
 
     if args.sorter == 'default':
-        print('sorted')
+        print('Using Python default sort algorithm...')
         sorted_rows, start, end = default_sorted(data_rows)
 
     elif args.sorter == 'qsort':
-        print('qsort')
+        print('Using C default qsort algorithm...')
         sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
 
     elif args.sorter == 'merge':
-        print('merge')
+        print('Using C custom merge sort algorithm...')
         sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
 
     elif args.sorter == 'quick':
-        print('quick')
+        print('Using C custom quick sort algorithm...')
         sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
     
     elif args.sorter == 'heap':
-        print('heap')
+        print('Using C custom heap sort algorithm...')
         sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
     
     elif args.sorter == 'radix':
-        print('radix')
+        print('Using C custom radix sort algorithm...')
         sorted_rows, start, end, c_start, c_end = c_sorted(data_rows, args.sorter)
 
-
     output_file = args.file.replace('.csv', '_sorted.csv')
-    with open(output_file, 'w', newline='') as file:
-        writer = csv.writer(file)
-        if header:
-            writer.writerow(header)
-        writer.writerows(sorted_rows)
-
+    write_csv(output_file, header, sorted_rows)
 
     if args.benchmark:
+        print('-' * 67)
+        print('PERFORMANCE BENCHMARK')
         ns_conversion = get_time_divisor(args.time)
-        stable = check_stability(sorted_rows)
-
-        print(f"{(end - start) / ns_conversion:.4f}{args.time}")
+        total_time = (end - start) / ns_conversion
+        
         if args.sorter != 'default':
-            print(f"{(c_end - c_start) / ns_conversion:.4f}{args.time}")
-        if stable:
-            print('stable')
+            sort_time = (c_end - c_start) / ns_conversion
+            print(f'Sorting time: {sort_time:.4f}{args.time}')
+            print(f'Conversion overhead: {(total_time - sort_time):.4f}{args.time}')
+            print(f'Total time: {total_time:.4f}{args.time}')
         else:
-            print('not stable')
+            print(f'Sorting time: {total_time:.4f}{args.time}')
+
+        print('Stability:', 'Stable' if check_stability(sorted_rows) else 'Not stable')
+        print('-' * 67)
 
 
 if __name__ == "__main__":
