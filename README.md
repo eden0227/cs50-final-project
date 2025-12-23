@@ -97,6 +97,7 @@
 -   Update performance benchmark for testing
 -   Refactor main.py for readability
 -   Add test folders for all data state
+-   Add Python scripts to automate warmup and testing ([src](src))
 
 ### [v0.9] - 2025-12-23
 
