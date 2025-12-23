@@ -1,7 +1,7 @@
 import os
 
 sorters = ['default', 'qsort', 'merge', 'quick', 'heap', 'radix']
-states = ['unsorted, sorted, reversed, partially_unsorted']
+states = ['unsorted', 'sorted', 'reversed', 'partially_unsorted']
 
 for sorter in sorters:
     for state in states:
