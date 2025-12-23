@@ -82,7 +82,7 @@ def check_rows_header(rows, has_header):
         return None, rows
 
 
-def get_time_multiplier(time):
+def get_time_divisor(time):
     if time == 's':
         return 1e9
     elif time == 'ms':
@@ -170,7 +170,7 @@ def main():
 
 
     if args.benchmark:
-        ns_conversion = get_time_multiplier(args.time)
+        ns_conversion = get_time_divisor(args.time)
         stable = check_stability(sorted_rows)
 
         print(f"{(end - start) / ns_conversion:.4f}{args.time}")
