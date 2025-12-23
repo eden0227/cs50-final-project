@@ -94,7 +94,9 @@
 
 ### [v1.0] - 2025-12-24
 
--   Add test folders for all data state of 10 million rows
+-   Update performance benchmark for testing
+-   Refactor main.py for readability
+-   Add test folders for all data state
 
 ### [v0.9] - 2025-12-23
 
