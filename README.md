@@ -92,7 +92,7 @@
 
 ## Changelog
 
-### [v0.9] - 2025-12-23
+### [v1.0] - 2025-12-24
 
 -   Add test folders for all data state of 10 million rows
 
