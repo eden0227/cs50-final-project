@@ -94,6 +94,10 @@
 
 ### [v0.9] - 2025-12-23
 
+-   Add test folders for all data state of 10 million rows
+
+### [v0.9] - 2025-12-23
+
 -   Add quick and heap sorting algorithms
 -   Optimise program.dll through compiler flags
 
