@@ -98,6 +98,7 @@
 -   Refactor main.py for readability
 -   Add test folders for all data state
 -   Add Python scripts to automate warmup and testing ([src](src))
+-   Add performance benchmark results and C sorting algorithms code snippets ([public](public))
 
 ### [v0.9] - 2025-12-23
 
