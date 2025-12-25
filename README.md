@@ -64,7 +64,7 @@ The system follows a modular architecture:
 
 The Python CLI controller handles:
 
--   Argument Parsing: Supports file and algoritm selection, enable benchmarking and time unit selection
+-   Argument Parsing: Supports file and algorithm selection, enable benchmarking and time unit selection
 -   File I/O: Reads CSV data file into Python list, writes sorted rows back into a new CSV
 -   C Integration: Manages C library loading and data structures, enable C-compatible arrays and function calling
 -   Performance Benchmark: Measures and display results on the terminal
@@ -145,7 +145,7 @@ Python ctypes is used as a built-in module that allows Python code to call funct
 ### Radix Sort
 
 -   Sorts elements by processing individual digits or bits
--   A non-comparative sorting algoritm
+-   A non-comparative sorting algorithm
 -   Time complexity: O(n \* k)
 -   Space complexity: O(n)
 -   Stability: Stable
